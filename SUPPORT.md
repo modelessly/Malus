@@ -25,4 +25,4 @@ Conversion happens locally. Malus does not upload, retain, sell, or share the ac
 Include the public page URL, what you expected, what happened, and the Malus version. Do not include private page content, credentials, application-form answers, or other sensitive information.
 
 - Email: [allen@modeless.io](mailto:allen@modeless.io)
-- Issues: [github.com/modelessly/job-markdown/issues](https://github.com/modelessly/job-markdown/issues)
+- Issues: [github.com/modelessly/Malus/issues](https://github.com/modelessly/Malus/issues)

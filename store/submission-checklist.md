@@ -17,7 +17,7 @@
 - [ ] Inspect the final store-installed experience on an article, documentation page, and supported job listing.
 - [ ] Commit the release changes and merge or push them to the public default branch.
 - [ ] Confirm the privacy and support URLs in `store/listing.md` load without authentication.
-- [ ] Decide whether the GitHub repository will remain `job-markdown` or be renamed to `malus`; update listing URLs accordingly.
+- [x] Rename the GitHub repository to `Malus` and update the listing URLs.
 - [ ] Confirm the public listing name **Malus — Webpage to Markdown** is acceptable despite the unrelated existing Malus VPN listing.
 - [ ] Run `npm run release:package` and upload the generated ZIP without modifying it afterward.
 

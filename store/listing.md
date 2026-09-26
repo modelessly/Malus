@@ -48,15 +48,15 @@ Malus works with ordinary rendered HTML that Chrome allows an extension to inspe
 
 ## Website
 
-https://github.com/modelessly/job-markdown
+https://github.com/modelessly/Malus
 
 ## Support URL
 
-https://github.com/modelessly/job-markdown/blob/main/SUPPORT.md
+https://github.com/modelessly/Malus/blob/main/SUPPORT.md
 
 ## Privacy policy URL
 
-https://github.com/modelessly/job-markdown/blob/main/PRIVACY.md
+https://github.com/modelessly/Malus/blob/main/PRIVACY.md
 
 These URLs will work after the release changes are merged or pushed to the repository's default branch. If the GitHub repository is renamed, replace them with the final redirected or renamed URLs before submission.
 
