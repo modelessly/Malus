@@ -101,6 +101,40 @@ export async function extractGenericJob(): Promise<ExtractionResult> {
 
   const posting = records.find((record) => hasType(record, "JobPosting"));
 
+  const jobUrlSignal =
+    /(?:^|\/)(?:jobs?|careers?|positions?|vacanc(?:y|ies)|details)(?:\/|$)/i.test(
+      window.location.pathname,
+    );
+  const semanticJobSignal = Boolean(
+    document.querySelector(
+      "[itemprop='description'], .job__description, .ui-foreign-click-description, .adp-body, [data-testid*='job-description' i], [data-test*='job-description' i], [id*='job-description' i], [class*='job-description' i], [id*='jobDescription' i], [class*='jobDescription' i]",
+    ),
+  );
+  const jobHeadingSignal = Array.from(
+    document.querySelectorAll("h1, h2, h3, h4, [role='heading']"),
+  ).some((element) =>
+    /^(?:job description|about the role|about this role|what you(?:'|’)ll do|the role|responsibilities)$/i.test(
+      normalize(element.textContent),
+    ),
+  );
+  const jobApplicationSignal = /^Job Application for .+\s+at\s+.+$/i.test(
+    normalize(document.title),
+  );
+
+  if (
+    !posting &&
+    !jobUrlSignal &&
+    !semanticJobSignal &&
+    !jobHeadingSignal &&
+    !jobApplicationSignal
+  ) {
+    return {
+      ok: false,
+      reason: "unsupported",
+      message: "No job posting was found on this page.",
+    };
+  }
+
   const organizationName = (value: unknown): string => {
     if (typeof value === "string") return normalize(value);
     if (!value || typeof value !== "object") return "";

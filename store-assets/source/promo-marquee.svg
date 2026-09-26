@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="560" viewBox="0 0 1400 560">
+  <rect width="1400" height="560" fill="#143c2c"/>
+  <circle cx="1180" cy="80" r="280" fill="#1d513c"/><circle cx="1240" cy="500" r="330" fill="#0f3024"/>
+  <rect x="90" y="86" width="86" height="86" rx="24" fill="#fff9ea"/>
+  <path d="M116 112h35l15 15v32h-50z" fill="#143c2c"/>
+  <path d="M141 128v19m-9-9 9 9 9-9" fill="none" stroke="#c73a3d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="90" y="246" font-family="Georgia, serif" font-size="82" font-weight="700" fill="#fff9ea">Malus</text>
+  <text x="90" y="310" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#dce7df">Turn webpages into clean Markdown.</text>
+  <text x="90" y="366" font-family="Arial, sans-serif" font-size="22" fill="#aec1b5">Preserve useful content. Remove the clutter. Keep it local.</text>
+  <rect x="90" y="414" width="204" height="50" rx="25" fill="#c73a3d"/>
+  <text x="192" y="446" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff">SAVE AS MARKDOWN</text>
+  <rect x="925" y="106" width="304" height="382" rx="22" fill="#fffdf7" transform="rotate(5 1077 297)"/>
+  <path d="M978 182h172M978 224h204M978 266h160M978 338h190M978 380h146" stroke="#93a097" stroke-width="14" stroke-linecap="round" transform="rotate(5 1077 297)"/>
+  <path d="M1082 405v-96m-34 34 34-34 34 34" fill="none" stroke="#c73a3d" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" transform="rotate(185 1082 357)"/>
+</svg>

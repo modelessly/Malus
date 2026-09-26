@@ -1,29 +1,27 @@
 # Roadmap
 
-## V1: Core Promise
+## V1: General Local Capture
 
-Goal: save a supported LinkedIn job as clean Markdown with one explicit action.
+Goal: save the useful content of an ordinary rendered webpage as clean Markdown with one explicit action.
 
-Capabilities include resilient local extraction, formatted output, safe download, clear feedback, minimum permissions, and fixture-based tests.
+Capabilities include general semantic extraction, richer Markdown, job-specific extraction, safe local download, clear feedback, minimum permissions, and representative fixture tests.
 
-Validation requires all automated checks to pass plus manual testing on an authenticated, fully loaded LinkedIn job-detail page.
+Validation requires all automated checks plus manual sampling of an article, documentation page, supported job listing, and known unsupported surface.
 
 ## V2: Reliability Depth
 
-Potential additions, only after live evidence:
+Potential additions, only after concrete live evidence:
 
-- Selector fallbacks for confirmed LinkedIn layout or locale variants.
-- Focused accessibility refinements discovered through manual review.
+- Focused extraction heuristics for confirmed page patterns.
+- Selector fallbacks for job-site layout or locale variants.
+- Accessibility refinements found during manual review.
 - Release packaging and store assets when publication is requested.
-
-## V3: Expansion
-
-Potential additional job-site extractors using the existing normalized extraction interface.
 
 ## Parking Lot
 
-- Cloud storage integrations
-- Job tracking and organization
-- AI-assisted analysis or writing
+- Cloud storage or sync
+- Saved-page library
+- AI-assisted analysis, rewriting, or summarization
+- Automatic crawling or persistent site access
 
 These are not committed product scope.

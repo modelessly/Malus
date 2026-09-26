@@ -2,28 +2,28 @@
 
 ## Current Focus
 
-Manual Chrome validation of the completed Job Markdown MVP.
+Complete publisher-account submission and manually validate the reviewed Malus store build.
 
 ## Now
 
-- Load the production `dist/` directory as an unpacked extension and test an authenticated LinkedIn job-detail page.
+- Commit and publish the prepared privacy and support documents at publicly accessible URLs.
+- Create the publisher account, upload the prepared release ZIP privately, and submit it for review.
+- Install the reviewed store build and sample a live article, documentation page, and job listing.
 
 ## Next
 
-- Capture any selector or locale gaps found during live testing.
-- Re-run the full validation suite after fixes, if any.
+- Record concrete markup gaps found during live use.
+- Add focused fixtures before changing extraction heuristics.
 - Use the release checklist only when packaging or publication is requested.
 
 ## Blocked
 
-- Authenticated LinkedIn verification requires a manual browser session; fixtures intentionally contain no account or session data.
+- Literal universal webpage conversion is impossible for inaccessible DOM, protected frames, canvas-only apps, embedded documents, or unloaded content.
 
 ## Done
 
-- MVP source, popup, extractor, Markdown output, fixtures, automated tests, build, and documentation completed on 2026-08-21.
-
-## Handoff Notes
-
-- Run `npm install`, then `npm run build`; load `dist/` in `chrome://extensions`.
-- The manifest intentionally declares only `activeTab` and `scripting`.
-- LinkedIn-specific code belongs in `src/extractors`; keep Markdown and download code site-independent.
+- Renamed the product and UI from Job Markdown to Malus.
+- Added the job-first, general-page-fallback extraction architecture.
+- Added general page metadata, richer Markdown structures, and representative fixture coverage.
+- Passed formatting, lint, type checks, 25 fixture tests, and the production build.
+- Prepared extension icons, store artwork, listing copy, privacy disclosures, reviewer instructions, and reproducible ZIP packaging.

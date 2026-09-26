@@ -1,0 +1,38 @@
+<head>
+  <title>Malus API Reference</title>
+  <meta property="og:site_name" content="Malus Docs" />
+</head>
+<body>
+  <header role="banner">Documentation Search Account</header>
+  <main>
+    <h1>Capture API</h1>
+    <p>
+      The capture API converts the currently rendered document into a portable
+      Markdown file.
+    </p>
+    <h2>Example</h2>
+    <pre><code class="language-ts">const result = await capturePage();
+console.log(result.title);</code></pre>
+    <h2>Return values</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>title</td>
+          <td>Page title</td>
+        </tr>
+        <tr>
+          <td>source</td>
+          <td>Canonical URL</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>See <a href="../guides/clean-content">clean content</a> for details.</p>
+  </main>
+  <aside>On this page Example Return values</aside>
+</body>

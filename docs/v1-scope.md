@@ -2,31 +2,20 @@
 
 ## Included
 
-- Chrome Manifest V3 toolbar extension.
-- Canonical LinkedIn `/jobs/view/...` support.
-- Extraction of title, company, location, optional salary/workplace/employment metadata, full available description, source URL, and capture date.
-- Sanitized YAML front matter and structured Markdown output.
-- Local `company-job-title.md` download.
+- Chrome Manifest V3 toolbar extension named Malus.
+- One-action local capture of ordinary fully loaded HTTP(S) pages.
+- Job-first extraction with a semantic general-page fallback.
+- Page and job metadata, sanitized Markdown, safe filenames, and local download.
+- Headings, paragraphs, emphasis, links, images, quotations, lists, code, and tables.
 - Clear ready, loading, success, failure, and unsupported-page states.
 - Fixture-based automated tests and unpacked-extension build.
 
 ## Explicitly Excluded
 
-- Search-page or collection-pane capture.
-- Accounts, cloud storage, sync, backend services, analytics, or tracking.
-- External APIs, AI features, application tracking, or a website/dashboard.
-- Additional job sites and Chrome Web Store publication.
+- Browser-internal pages, protected/inaccessible frames, canvas-only applications, embedded PDFs, media transcription, paywall bypass, and content absent from the DOM.
+- Accounts, cloud storage, sync, backend services, analytics, tracking, external APIs, or AI features.
+- Pixel-identical visual reproduction, application tracking, or a website/dashboard.
 
 ## Success Criteria
 
-The extension should export a readable job file, omit obvious interface clutter, tolerate missing optional fields, keep content local, and declare only the permissions required for user-initiated active-page extraction.
-
-## Non-Goals
-
-Job Markdown does not manage applications, rewrite descriptions, score jobs, or retain a job library.
-
-## Scope Questions
-
-- Does a proposed change directly improve reliable one-click capture?
-- Can it remain a small local extension without persistent access or infrastructure?
-- Has authenticated LinkedIn testing demonstrated the need?
+Malus should export readable primary content, retain useful semantic structure, omit obvious interface clutter, tolerate missing optional metadata, preserve specialized job behavior, keep content local, and declare only permissions required for user-initiated active-page extraction.

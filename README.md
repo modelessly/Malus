@@ -1,17 +1,28 @@
-# Job Markdown
+# Malus
 
-Job Markdown is a small Chrome extension that saves the essential content of job postings across the web as clean Markdown files. Open a job-detail page, click the toolbar icon, and choose **Save as Markdown**. The title, company, location, optional job metadata, description, source URL, and capture date are processed and downloaded entirely inside the browser.
+Malus is a small, local-first Chrome extension that saves the useful content of the page you are viewing as a clean Markdown file. Open a normal webpage, click the toolbar icon, and choose **Save as Markdown**. Everything is processed inside the browser and downloaded as a plain `.md` file.
+
+Job pages retain an extra advantage: Malus first tries its specialized job extractors, preserving title, company, location, job metadata, and description. If a page is not recognized as a job, the general page extractor takes over.
+
+## What it preserves
+
+- Page title, canonical source, site, author, publication date, language, and capture date when available.
+- Headings, paragraphs, emphasis, links, images, quotations, lists, code blocks, and tables.
+- Job-specific metadata on supported LinkedIn, schema.org, Greenhouse, DocuSign, Adzuna, and semantically marked-up job pages.
+
+Navigation, forms, cookie prompts, advertising, recommendations, and similar page chrome are removed where recognizable.
 
 ## Architecture
 
-- `src/extractors/linkedin.ts` contains the LinkedIn-specific, self-contained page extractor. It prefers JobPosting JSON-LD, then uses semantic selector fallbacks. It removes hidden and unrelated interface elements and returns sanitized description HTML.
-- `src/extractors/generic.ts` handles other public job sites. It prefers schema.org `JobPosting` JSON-LD and then uses portable semantic HTML fallbacks.
-- `src/model.ts` defines the extractor boundary. A future extractor should return the same `ExtractionResult` shape.
-- `src/markdown.ts` handles site-independent HTML-to-Markdown conversion, YAML front matter, and filename sanitization.
-- `src/popup.ts` manages supported, ready, loading, success, and error states; injects the extractor with `chrome.scripting`; and starts a local Blob download.
-- `tests/fixtures` contains saved, sanitized public-page-shaped HTML without account or session data.
+- `src/extractors/linkedin.ts` handles LinkedIn jobs.
+- `src/extractors/generic.ts` handles structured and semantically marked-up jobs on other sites.
+- `src/extractors/page.ts` scores semantic content regions and provides a general rendered-page fallback.
+- `src/model.ts` defines separate normalized job and webpage boundaries.
+- `src/markdown.ts` converts sanitized HTML to Markdown, generates YAML front matter, and creates safe filenames.
+- `src/popup.ts` tries job extraction first, falls back to general capture, and starts a local Blob download.
+- `tests/fixtures` contains sanitized representative pages without account or session data.
 
-The extension uses Manifest V3 and requests only `activeTab` and `scripting`. `activeTab` limits access to the page on which the user explicitly invokes the extension. No persistent host access is requested.
+The extension uses Manifest V3 and requests only `activeTab` and `scripting`. It does not request persistent access to every site.
 
 ## Local setup
 
@@ -23,7 +34,7 @@ npm run test
 npm run build
 ```
 
-Useful checks:
+Full checks:
 
 ```sh
 npm run format:check
@@ -40,39 +51,40 @@ The production extension is written to `dist/`.
 1. Run `npm run build`.
 2. Open `chrome://extensions`.
 3. Enable **Developer mode**.
-4. Choose **Load unpacked** and select this repository's `dist` directory.
-5. Pin **Job Markdown** to the toolbar if desired.
+4. Choose **Load unpacked** and select this repository's `dist` directory. If it is already loaded, use **Reload** after rebuilding.
+5. Pin **Malus** to the toolbar if desired.
 
-## Test on a job site
+## Manual test
 
-1. Open an individual public job-detail page. The extension supports LinkedIn and sites that publish schema.org `JobPosting` data or recognizable semantic job markup.
-2. Wait for the job page to load. Job Markdown automatically expands supported **Show more** description controls before extraction.
-3. Click the Job Markdown toolbar icon. The popup should say the page is ready.
-4. Click **Save as Markdown** and inspect the downloaded `company-job-title.md` file.
-5. Confirm the description is complete, job metadata is accurate, and navigation, recommendations, apply controls, and footer text are absent.
-6. Open the popup on a non-job page to confirm that extraction reports no job posting found.
+1. Open a fully loaded article, documentation page, or individual job listing.
+2. Click the Malus toolbar icon and then **Save as Markdown**.
+3. Inspect the downloaded file for complete core content, working absolute links, useful structure, and absence of obvious navigation or prompts.
+4. Repeat with a job page and confirm that the filename and YAML retain job-specific fields.
 
 ## Privacy
 
-All extraction, conversion, and file creation happens locally in Chrome. There is no backend, analytics, account system, external API, or network transmission of captured content. The extension reads only the active page after the user invokes it and does not retain the job after download.
+All extraction, conversion, and file creation happens locally in Chrome. There is no backend, analytics, account system, external API, AI service, or network transmission of captured content. Malus reads only the active page after the user invokes it and does not retain content after download.
 
-## Known limitations
+The complete public disclosure is in [PRIVACY.md](PRIVACY.md), and usage help is in [SUPPORT.md](SUPPORT.md).
 
-- Job sites change markup frequently and may serve different layouts by locale, account, or experiment. Structured data and semantic fallbacks cover many sites, but unusual or canvas-based pages may still require selector maintenance.
-- Individual job-detail pages are supported. Embedded job panes on search or collection routes may not expose complete job data.
-- Job Markdown expands known LinkedIn description controls, but content that has not loaded or uses an unrecognized interaction may still require selector maintenance.
-- Salary and job-type labels vary by locale. JSON-LD is preferred; English-labelled visual metadata is the current fallback.
-- The automated fixtures validate representative markup, but an authenticated production page must be checked manually because no account data is included in tests.
+## Chrome Web Store release
 
-## Add a site-specific optimization
+Store copy, privacy declarations, reviewer instructions, artwork, and the submission checklist are under `store/` and `store-assets/`.
 
-1. Add a self-contained extractor under `src/extractors/` that checks its supported URL and returns `ExtractionResult` from `src/model.ts`.
-2. Prefer structured job data first, add semantic selector fallbacks, and sanitize the description to the same limited HTML vocabulary.
-3. Add a sanitized fixture and tests for extraction, clutter removal, missing fields, unsupported pages, and failure behavior.
-4. Extend popup URL routing only when the generic extractor is insufficient. Add host permissions only if the site's flow cannot use the existing user-granted `activeTab` permission.
+Create a verified upload package with:
 
-Do not put site-specific selectors into the Markdown or download modules.
+```sh
+npm run release:package
+```
+
+This rebuilds the extension and creates `release/malus-<version>.zip` with `manifest.json` at the archive root. Follow `store/submission-checklist.md` before uploading it.
+
+## Honest limitations
+
+“Any page” means ordinary rendered HTML that Chrome lets an extension inspect. Malus cannot reliably convert browser-internal pages, extension-store pages, protected or inaccessible frames, paywalled content that is not present in the DOM, canvas-only applications, embedded PDFs, video/audio meaning, or content that has not loaded. Highly interactive applications may yield only their currently rendered text. Sites can also change markup, so specialized job selectors may require maintenance.
+
+Automated fixtures cover representative articles, documentation, unstructured pages, code, tables, images, and several job renderers. They demonstrate breadth; they do not prove compatibility with every webpage on the internet.
 
 ## License
 
-Job Markdown is available under the [MIT License](LICENSE).
+Malus is available under the [MIT License](LICENSE).

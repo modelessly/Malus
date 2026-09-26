@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   generateFrontMatter,
   generateMarkdown,
+  generatePageMarkdown,
   sanitizeFilename,
+  sanitizePageFilename,
 } from "../src/markdown";
-import type { JobPosting } from "../src/model";
+import type { CapturedPage, JobPosting } from "../src/model";
 
 const job: JobPosting = {
   title: 'Senior "Product" Designer',
@@ -17,6 +19,24 @@ const job: JobPosting = {
   captured: "2026-08-21",
   descriptionHtml:
     "<h2>About the role</h2><p>Build <strong>useful</strong> things.</p><ul><li>Lead discovery</li></ul>",
+};
+
+const page: CapturedPage = {
+  title: "A Useful Reference",
+  siteName: "Example Docs",
+  author: "Alex Rivera",
+  published: "2026-09-20",
+  language: "en",
+  source: "https://example.com/reference",
+  captured: "2026-09-26",
+  contentHtml: `
+    <h2>Usage</h2>
+    <p>Run <code>capture()</code> and review the result.</p>
+    <blockquote>Keep the useful content.</blockquote>
+    <pre><code class="language-ts">const page = capture();</code></pre>
+    <table><tr><th>Field</th><th>Value</th></tr><tr><td>format</td><td>Markdown</td></tr></table>
+    <img src="https://example.com/diagram.png" alt="Capture flow">
+  `,
 };
 
 describe("sanitizeFilename", () => {
@@ -37,6 +57,13 @@ describe("sanitizeFilename", () => {
 
   it("falls back when the input has no usable characters", () => {
     expect(sanitizeFilename("公司", "設計師")).toBe("job.md");
+  });
+
+  it("creates a safe filename for a general page", () => {
+    expect(sanitizePageFilename("A Useful Reference | Docs")).toBe(
+      "a-useful-reference-docs.md",
+    );
+    expect(sanitizePageFilename("資料")).toBe("page.md");
   });
 });
 
@@ -66,5 +93,23 @@ describe("generateMarkdown", () => {
       employmentType: null,
     });
     expect(markdown.match(/: null/g)).toHaveLength(3);
+  });
+});
+
+describe("generatePageMarkdown", () => {
+  it("renders page metadata and rich semantic content", () => {
+    const markdown = generatePageMarkdown(page);
+    expect(markdown).toContain('site_name: "Example Docs"');
+    expect(markdown).toContain('author: "Alex Rivera"');
+    expect(markdown).toContain("# A Useful Reference");
+    expect(markdown).toContain("## Usage");
+    expect(markdown).toContain("`capture()`");
+    expect(markdown).toContain("> Keep the useful content.");
+    expect(markdown).toContain("```ts\nconst page = capture();\n```");
+    expect(markdown).toContain("| Field | Value |");
+    expect(markdown).toContain("| format | Markdown |");
+    expect(markdown).toContain(
+      "![Capture flow](https://example.com/diagram.png)",
+    );
   });
 });

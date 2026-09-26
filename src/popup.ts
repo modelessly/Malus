@@ -1,6 +1,13 @@
-import { extractLinkedInJob } from "./extractors/linkedin";
 import { extractGenericJob } from "./extractors/generic";
-import { generateMarkdown, sanitizeFilename } from "./markdown";
+import { extractLinkedInJob } from "./extractors/linkedin";
+import { extractWebPage } from "./extractors/page";
+import {
+  generateMarkdown,
+  generatePageMarkdown,
+  sanitizeFilename,
+  sanitizePageFilename,
+} from "./markdown";
+import type { ExtractionResult, PageExtractionResult } from "./model";
 
 const button = document.querySelector<HTMLButtonElement>("#save-button");
 const status = document.querySelector<HTMLElement>("#status");
@@ -47,57 +54,89 @@ const isWebPageUrl = (url: string | undefined): boolean => {
   }
 };
 
+const downloadMarkdown = (markdown: string, filename: string) => {
+  const url = URL.createObjectURL(
+    new Blob([markdown], { type: "text/markdown;charset=utf-8" }),
+  );
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1_000);
+};
+
+const extractJob = async (
+  tabId: number,
+  linkedIn: boolean,
+): Promise<ExtractionResult | undefined> => {
+  const [injection] = await chrome.scripting.executeScript({
+    target: { tabId },
+    func: linkedIn ? extractLinkedInJob : extractGenericJob,
+  });
+  return injection?.result;
+};
+
+const extractPage = async (
+  tabId: number,
+): Promise<PageExtractionResult | undefined> => {
+  const [injection] = await chrome.scripting.executeScript({
+    target: { tabId },
+    func: extractWebPage,
+  });
+  return injection?.result;
+};
+
 const initialize = async () => {
   const tab = await getActiveTab();
   if (!tab?.id || !isWebPageUrl(tab.url)) {
-    setState("unsupported", "Open a public job-detail page to save it.");
+    setState("unsupported", "Open a normal web page to save it.");
     return;
   }
-  setState("ready", "Ready to inspect this job page.");
+  setState("ready", "Ready to save this page.");
 };
 
 button.addEventListener("click", async () => {
-  setState("loading", "Reading the job details…");
+  setState("loading", "Cleaning this page…");
   try {
     const tab = await getActiveTab();
     if (!tab?.id || !isWebPageUrl(tab.url)) {
-      setState("unsupported", "This is not a public web page.");
+      setState("unsupported", "This is not a normal web page.");
       return;
     }
 
-    const [injection] = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: isLinkedInJobUrl(tab.url) ? extractLinkedInJob : extractGenericJob,
-    });
-    const result = injection?.result;
-    if (!result?.ok) {
+    const jobResult = await extractJob(tab.id, isLinkedInJobUrl(tab.url));
+    if (jobResult?.ok) {
+      const job = {
+        ...jobResult.job,
+        captured: new Date().toISOString().slice(0, 10),
+      };
+      const filename = sanitizeFilename(job.company, job.title);
+      downloadMarkdown(generateMarkdown(job), filename);
+      setState("success", `Saved ${filename}`);
+      return;
+    }
+
+    const pageResult = await extractPage(tab.id);
+    if (!pageResult?.ok) {
       setState(
-        result?.reason === "unsupported" ? "unsupported" : "error",
-        result?.message ?? "Could not read this job.",
+        pageResult?.reason === "unsupported" ? "unsupported" : "error",
+        pageResult?.message ?? "Could not read this page.",
       );
       return;
     }
 
-    const job = {
-      ...result.job,
+    const page = {
+      ...pageResult.page,
       captured: new Date().toISOString().slice(0, 10),
     };
-    const markdown = generateMarkdown(job);
-    const filename = sanitizeFilename(job.company, job.title);
-    const url = URL.createObjectURL(
-      new Blob([markdown], { type: "text/markdown;charset=utf-8" }),
-    );
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = filename;
-    anchor.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1_000);
+    const filename = sanitizePageFilename(page.title);
+    downloadMarkdown(generatePageMarkdown(page), filename);
     setState("success", `Saved ${filename}`);
   } catch (error) {
     const message =
       error instanceof Error && /Cannot access|permission/i.test(error.message)
         ? "Chrome could not access this page. Refresh it and try again."
-        : "Something went wrong while saving this job.";
+        : "Something went wrong while saving this page.";
     setState("error", message);
   }
 });

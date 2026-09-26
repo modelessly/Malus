@@ -2,58 +2,44 @@
 
 ## Platform
 
-- Primary platform: Chrome extension using Manifest V3
-- Secondary platforms: none
-- Runtime: current Chrome; development requires Node.js 20.19+ or 22.12+
-
-## Core Technologies
-
-- UI: semantic HTML and CSS popup
-- Language: strict TypeScript
-- Persistence: none; output is downloaded as a local Markdown file
-- Networking: none
-- Build tooling: Vite and TypeScript
-- Testing: Vitest with jsdom and sanitized HTML fixtures
+- Chrome extension using Manifest V3
+- Strict TypeScript with Vite
+- Vitest, jsdom, and sanitized HTML fixtures
+- Local Markdown download; no persistence or networking
 
 ## Architectural Goals
 
-Prioritize a fast one-action workflow, local-only processing, resilient extraction, clear module boundaries, and focused tests. Avoid background services, persistent host access, speculative abstractions, and site-specific logic outside extractor modules.
+Prioritize a one-action workflow, local-only processing, resilient semantic extraction, clear module boundaries, and minimum permissions. Avoid background services, persistent host access, external processors, and site-specific logic outside extractor modules.
 
 ## Structure
 
-- `src/extractors/linkedin.ts`: self-contained LinkedIn page extractor serialized into the active tab
-- `src/model.ts`: shared extraction and normalized job-data types
-- `src/markdown.ts`: site-independent sanitization, YAML, Markdown, and filename generation
-- `src/popup.ts`: active-tab routing, UI state, extraction orchestration, and Blob download
-- `src/popup.css` and `popup.html`: accessible popup presentation
-- `tests/fixtures`: sanitized page-shaped HTML used by extraction tests
+- `src/extractors/linkedin.ts`: self-contained LinkedIn job extractor
+- `src/extractors/generic.ts`: structured and semantic job extractor for other sites
+- `src/extractors/page.ts`: general webpage extractor that scores semantic content regions, sanitizes the selected DOM, and falls back to the rendered body
+- `src/model.ts`: normalized job and webpage types with discriminated results
+- `src/markdown.ts`: HTML-to-Markdown, YAML, and filename generation for both document types
+- `src/popup.ts`: active-tab validation, job-first extraction, general fallback, UI state, and Blob download
+- `tests/fixtures`: sanitized representative page HTML
 - `public/manifest.json`: minimum-permission extension manifest
+
+## Extraction Flow
+
+1. Reject non-HTTP(S) browser surfaces before injection.
+2. Try the LinkedIn or generic job extractor.
+3. If no job is recognized, run the general page extractor.
+4. Score semantic content regions; use the rendered body only when no useful region wins.
+5. Remove recognizable scripts, controls, navigation, forms, advertising, consent, recommendation, and related-content elements.
+6. Preserve a limited semantic vocabulary and resolve links and images to absolute HTTP(S) URLs.
+7. Convert locally to Markdown and trigger a local file download.
 
 ## Data Model
 
-`ExtractedJob` contains title, company, location, nullable salary/workplace/employment values, sanitized description HTML, and source URL. `JobPosting` adds the local capture date. Extractors return a discriminated `ExtractionResult` for success, unsupported page, or extraction failure.
+`ExtractedJob` holds normalized job metadata and sanitized description HTML; `JobPosting` adds the capture date. `ExtractedPage` holds page metadata, sanitized content HTML, and source; `CapturedPage` adds the capture date. Both extractor families return discriminated success/failure results.
 
-## State Ownership
+## Permissions and Privacy
 
-Popup state is ephemeral and owns ready, loading, success, error, and unsupported feedback. No job content persists after the Blob download is initiated.
+`activeTab` grants temporary access only after the user invokes the extension. `scripting` runs a self-contained extractor in that tab. There is no host-wide permission, backend, external API, remote content processor, or retained content store.
 
-## Integration Boundaries
+## Hard Boundary
 
-- Chrome `activeTab`: temporary access granted by the user's toolbar invocation
-- Chrome `scripting`: runs the self-contained extractor in the active page
-- LinkedIn DOM and JobPosting JSON-LD: read-only inputs that may change over time
-
-No external service, SDK, API, or remote content processor is used.
-
-## Reliability Requirements
-
-- Reject unsupported URLs before injection.
-- Prefer JSON-LD and use multiple semantic selector fallbacks.
-- Fail clearly when required fields or description content are unavailable.
-- Treat salary, workplace type, and employment type as optional.
-- Remove scripts, controls, hidden elements, advertisements, and recommendations.
-- Sanitize links, YAML strings, Markdown text, and filenames.
-
-## Future-Proofing
-
-Additional sites should add a self-contained extractor returning the existing `ExtractionResult`. Popup routing can then select an extractor by URL without changing Markdown or download logic.
+The extractor can only inspect accessible DOM content. Browser-internal pages, protected frames, canvas-only applications, embedded documents, unloaded content, and media meaning are outside the reliable conversion boundary.

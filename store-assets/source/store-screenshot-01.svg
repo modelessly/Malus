@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <rect width="1280" height="800" fill="#dfe8e2"/>
+  <rect x="40" y="34" width="1200" height="732" rx="22" fill="#f8f7f2" stroke="#b8c4bc" stroke-width="2"/>
+  <path d="M40 92h1200" stroke="#b8c4bc" stroke-width="2"/>
+  <circle cx="74" cy="63" r="8" fill="#dd6b65"/><circle cx="100" cy="63" r="8" fill="#dbad43"/><circle cx="126" cy="63" r="8" fill="#5aaf79"/>
+  <rect x="174" y="49" width="650" height="28" rx="14" fill="#e6e8e3"/>
+  <text x="200" y="69" font-family="Arial, sans-serif" font-size="13" fill="#68736c">fieldnotes.example/stories/designing-calm-tools</text>
+  <rect x="84" y="132" width="770" height="580" rx="12" fill="#ffffff"/>
+  <text x="126" y="182" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#2d8a5f">FIELD NOTES</text>
+  <text x="126" y="254" font-family="Georgia, serif" font-size="48" font-weight="700" fill="#18211c">Designing calm tools</text>
+  <text x="126" y="292" font-family="Arial, sans-serif" font-size="18" fill="#657068">Good interfaces preserve context and make the next action clear.</text>
+  <rect x="126" y="330" width="670" height="184" rx="10" fill="#edf3ef"/>
+  <path d="M172 382h380M172 416h540M172 450h494" stroke="#94a39a" stroke-width="12" stroke-linecap="round"/>
+  <text x="126" y="568" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#18211c">Useful principles</text>
+  <circle cx="140" cy="608" r="5" fill="#c73a3d"/><path d="M160 608h460" stroke="#7e8982" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="140" cy="646" r="5" fill="#c73a3d"/><path d="M160 646h390" stroke="#7e8982" stroke-width="10" stroke-linecap="round"/>
+  <rect x="882" y="118" width="318" height="336" rx="18" fill="#fffdf7" stroke="#c9cec8" stroke-width="2"/>
+  <rect x="906" y="144" width="46" height="46" rx="13" fill="#143c2c"/>
+  <text x="929" y="174" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#fff9ea">M↓</text>
+  <text x="970" y="163" font-family="Georgia, serif" font-size="24" font-weight="700" fill="#18211c">Malus</text>
+  <text x="970" y="184" font-family="Arial, sans-serif" font-size="12" fill="#657068">Any page, cleanly saved.</text>
+  <rect x="906" y="216" width="270" height="58" rx="10" fill="#ffffff" stroke="#d8d5ca"/>
+  <circle cx="925" cy="245" r="6" fill="#2d8a5f"/>
+  <text x="943" y="250" font-family="Arial, sans-serif" font-size="13" fill="#505b54">Ready to save this page.</text>
+  <rect x="906" y="292" width="270" height="54" rx="10" fill="#143c2c"/>
+  <text x="926" y="325" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Save as Markdown</text>
+  <text x="1148" y="326" font-family="Arial, sans-serif" font-size="22" fill="#ffffff">↓</text>
+  <text x="1041" y="378" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#788079">Processed locally. Nothing is uploaded.</text>
+  <text x="882" y="520" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#143c2c">One click.</text>
+  <text x="882" y="560" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#143c2c">Clean Markdown.</text>
+  <text x="882" y="606" font-family="Arial, sans-serif" font-size="17" fill="#4f5d55">Preserves headings, links, lists,</text>
+  <text x="882" y="632" font-family="Arial, sans-serif" font-size="17" fill="#4f5d55">images, code, tables, and source.</text>
+  <rect x="882" y="672" width="110" height="30" rx="15" fill="#c73a3d"/>
+  <text x="937" y="692" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">LOCAL ONLY</text>
+</svg>

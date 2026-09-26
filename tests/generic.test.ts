@@ -15,6 +15,25 @@ describe("generic job extraction", () => {
     );
   });
 
+  it("does not misclassify an ordinary article as a job", async () => {
+    window.history.replaceState({}, "", "/stories/designing-calm-tools");
+    document.documentElement.innerHTML = `
+      <head>
+        <title>Designing Calm Tools</title>
+        <meta property="og:site_name" content="Field Notes">
+      </head>
+      <body>
+        <main>
+          <h1>Designing Calm Tools</h1>
+          <p>Good tools help people focus on the work rather than the interface around it. This article explores how calm design makes complex products easier to understand.</p>
+          <p>It covers information hierarchy, progressive disclosure, careful defaults, and the value of preserving context throughout a workflow.</p>
+        </main>
+      </body>`;
+
+    const result = await extractGenericJob();
+    expect(result).toMatchObject({ ok: false, reason: "unsupported" });
+  });
+
   it("extracts the DocuSign JobPosting structured data", async () => {
     document.documentElement.innerHTML = fixture("docusign-job.html");
     const result = await extractGenericJob();

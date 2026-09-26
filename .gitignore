@@ -11,6 +11,9 @@ DerivedData/
 # Dependency folders
 node_modules/
 
+# Generated release packages
+release/*.zip
+
 # Local environment
 .env
 .env.*

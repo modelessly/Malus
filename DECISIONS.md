@@ -87,3 +87,19 @@ Downstream projects may distribute proprietary modifications, and the license pr
 
 Status:
 Accepted
+
+---
+
+## 2026-09-26: Rename Job Markdown To Malus And Broaden Page Capture
+
+Decision:
+Rename the extension to Malus and make ordinary rendered webpages the primary product boundary. Preserve the existing specialized job extractors, then fall back to a separate semantic webpage extractor and richer Markdown converter.
+
+Reasoning:
+The same local, user-initiated workflow is useful beyond job listings. A layered approach retains reliable job metadata while allowing articles, documentation, and other readable HTML pages to be saved without granting persistent site access or adding cloud infrastructure.
+
+Tradeoffs:
+Coverage is substantially broader, but “any page” cannot literally include browser-internal surfaces, canvas-only applications, protected frames, inaccessible paywalls, embedded documents, media meaning, or content absent from the DOM. General extraction is heuristic and must be described honestly.
+
+Status:
+Accepted

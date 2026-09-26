@@ -48,3 +48,15 @@ Use this before shipping, sharing, demoing, or handing off a product version. Ke
 - [ ] List what remains.
 - [ ] Name known risks.
 - [ ] Recommend the next task.
+
+## Chrome Web Store
+
+- [ ] Manifest name, description, version, and icons match the intended listing.
+- [ ] `activeTab` and `scripting` justifications match actual behavior.
+- [ ] Privacy dashboard answers match the public privacy policy and product behavior.
+- [ ] Privacy and support URLs load publicly without authentication.
+- [ ] Required store imagery has exact dimensions and accurately represents the extension.
+- [ ] Reviewer instructions require no undisclosed credentials or environment.
+- [ ] `npm run release:package` succeeds and the ZIP contains `manifest.json` at its root.
+- [ ] The reviewed store-installed build, not only the unpacked build, passes manual smoke testing.
+- [ ] Initial visibility is private or unlisted until reviewed-build testing is complete.

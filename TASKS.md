@@ -1,23 +1,38 @@
 # TASKS.md
 
-## MVP Complete
+## Malus Generalization
 
-- [x] Define the Job Markdown product promise and V1 boundary.
-- [x] Create the Manifest V3 TypeScript/Vite extension scaffold.
-- [x] Build the popup and all required feedback states.
-- [x] Implement LinkedIn extraction with structured-data and selector fallbacks.
-- [x] Add local Markdown generation, YAML front matter, and safe downloads.
-- [x] Add sanitized extraction fixtures and focused automated tests.
-- [x] Document setup, architecture, privacy, limitations, and extension loading.
-- [x] Validate formatting, linting, type checking, tests, production build, assets, and permissions.
+- [x] Rename the extension, popup, manifest, and package to Malus.
+- [x] Preserve specialized LinkedIn and cross-site job extraction.
+- [x] Add a separate semantic webpage extractor and body fallback.
+- [x] Preserve headings, links, images, quotations, lists, code, and tables.
+- [x] Add general page metadata, YAML output, and safe filenames.
+- [x] Add fixtures for articles, documentation, unstructured pages, and known limitations.
+- [x] Document privacy, architecture, scope, and the honest universal-capture boundary.
+
+## Automated Validation
+
+- [x] Formatting check passes.
+- [x] Lint passes.
+- [x] Type checking passes.
+- [x] Job and general-page tests pass.
+- [x] Production build passes with minimum permissions.
 
 ## Manual Validation
 
-- [ ] Load `dist/` as an unpacked extension in Chrome.
-- [ ] Test against an authenticated LinkedIn job page with a fully expanded description.
-- [ ] Record any live markup or locale variants that require extractor updates.
+- [ ] Reload `dist/` as an unpacked extension in Chrome.
+- [ ] Save a live article and inspect content structure and clutter removal.
+- [ ] Save a live documentation page containing code or a table.
+- [ ] Save a supported job page and confirm normalized job front matter remains.
+- [ ] Confirm a restricted or canvas-only surface fails clearly rather than saving misleading output.
 
-## Backlog
+## Chrome Web Store Preparation
 
-- [ ] Consider another job-site extractor only after the LinkedIn workflow is validated.
-- [ ] Add extension-store packaging and release assets only when publishing is explicitly requested.
+- [x] Add extension and store icons.
+- [x] Add two listing screenshots and promotional tiles.
+- [x] Prepare privacy policy, support page, store copy, permission justifications, and reviewer instructions.
+- [x] Add reproducible versioned ZIP packaging.
+- [ ] Commit and publish the privacy/support pages at working public URLs.
+- [ ] Register and verify the Chrome Web Store publisher account.
+- [ ] Upload privately for trusted-tester review.
+- [ ] Validate the reviewed store-installed build before public release.
