@@ -85,6 +85,31 @@ describe("generic job extraction", () => {
     expect(result.job.descriptionHtml).not.toMatch(/First Name|Submit/);
   });
 
+  it("extracts Adzuna's job-detail renderer without JobPosting JSON-LD", async () => {
+    window.history.replaceState(
+      {},
+      "",
+      "/details/5872252226?utm_medium=api&utm_source=example",
+    );
+    document.documentElement.innerHTML = fixture("adzuna-job.html");
+
+    const result = await extractGenericJob();
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.job).toMatchObject({
+      title:
+        "Slack VP, Product Design (Individual Contributor; Principal Architect) (San Francisco)",
+      company: "100 Salesforce, Inc.",
+      location: "San Francisco , California, 94103",
+      salary: "258.000 - 452.000",
+      source: "https://www.adzuna.com/details/5872252226",
+    });
+    expect(result.job.descriptionHtml).toContain("Human-Agent Collaboration");
+    expect(result.job.descriptionHtml).not.toMatch(
+      /Sorry, this job is not available in your region|Similar jobs/,
+    );
+  });
+
   it("returns unsupported when the page has no recognizable job posting", async () => {
     document.documentElement.innerHTML =
       "<head><title>Company home</title></head><body><main>Welcome to our company.</main></body>";

@@ -138,6 +138,8 @@ export async function extractGenericJob(): Promise<ExtractionResult> {
   const descriptionSelectors = [
     "[itemprop='description']",
     ".job__description",
+    ".ui-foreign-click-description",
+    ".adp-body",
     "[data-testid*='job-description' i]",
     "[data-test*='job-description' i]",
     "[id*='job-description' i]",
@@ -272,6 +274,7 @@ export async function extractGenericJob(): Promise<ExtractionResult> {
     organizationName(posting?.hiringOrganization) ||
     textFrom([
       "[itemprop='hiringOrganization']",
+      ".ui-company",
       "[data-testid*='company-name' i]",
       "[class*='company-name' i]",
       "[class*='companyName' i]",
@@ -284,6 +287,7 @@ export async function extractGenericJob(): Promise<ExtractionResult> {
     textFrom([
       "[itemprop='jobLocation']",
       ".job__location",
+      ".ui-location",
       "[data-testid*='job-location' i]",
       "[class*='job-location' i]",
       "[class*='jobLocation' i]",
@@ -334,6 +338,7 @@ export async function extractGenericJob(): Promise<ExtractionResult> {
       : "";
   const salary =
     salaryFromStructuredData ||
+    textFrom([".ui-salary"]) ||
     descriptionText.match(
       /(?:USD\s*)?[$€£¥]\s?\d[\d,.]*(?:\s*[-–]\s*[$€£¥]?\s?\d[\d,.]*)?(?:\s+(?:base salary|per (?:year|hour|month)))?/i,
     )?.[0] ||
@@ -404,8 +409,8 @@ export async function extractGenericJob(): Promise<ExtractionResult> {
   });
 
   const canonicalHref =
-    document.querySelector<HTMLLinkElement>("link[rel='canonical']")?.href ??
-    "";
+    document.querySelector<HTMLLinkElement>("link[rel='canonical']")?.href ||
+    metaContent(["meta[property='og:url']"]);
   let source = `${window.location.origin}${window.location.pathname}${window.location.search}`;
   try {
     const canonical = new URL(canonicalHref);
